@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block body %}
+{% raw %}
+	<div class="w-100 d-flex align-items-center justify-content-between mx-auto mt-5 mb-2 px-2" style="max-width: 480px;">
+		<h1 class="text-gray-900 font-weight-bold m-0">Log In</h1>
+	</div>
+
+	<div class="card shadow border-left-primary mx-auto my-3 p-3" style="max-width: 480px;">
+		{% endraw %}
+		{% if 'error' in session: %}
+		{% raw %}
+			<div class="alert alert-danger">
+				{% endraw %}{{ get_and_clear_error() }}{% raw %}
+			</div>
+		{% endraw %}
+		{% endif %}
+		{% raw %}
+
+		<form class="" action="/login" method="POST">
+			<div class="mb-1">
+				<label class="text-muted small mb-1 d-block w-100" for="input-username">Username</label>
+				<input type="text" name="username" id="input-username" class="form-control" placeholder="Username" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"/>
+			</div>
+			<div class="mb-3">
+				<label class="text-muted small mb-1 d-block w-100" for="input-username">Password</label>
+				<input type="password" name="password" id="input-password" class="form-control" placeholder="Password" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"/>
+			</div>
+
+			<input type="submit" class="btn btn-primary d-block w-100" value="Login">
+		</form>
+	</div>
+
+	<div class="card shadow mx-auto my-3 p-3" style="max-width: 480px;">
+		<p class="text-center">Don't have an account?</p>
+
+		<a href="{% endraw %}{{ url_for('_view_signup') }}{% raw %}" class="btn btn-outline-primary d-block w-100">Sign Up</a>
+	</div>
+{% endraw %}
+{% endblock body %}

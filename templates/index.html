@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+{% block body %}
+{% raw %}
+	<nav class="navbar-nav navbar-light bg-white border-0 mb-4 shadow">
+		<div class="w-100 d-flex align-items-center justify-content-between mx-auto mt-5 mb-2 px-2" style="max-width: 480px;">
+			<h1 class="text-gray-900 font-weight-bold m-0">Contacts</h1>
+
+			<div class="d-flex flex-row">
+				<div class="dropdown no-arrow ml-auto px-2">
+					<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-ellipsis-h p-3 text-gray-600"></i>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in">
+						<a class="dropdown-item" href="/logout">Logout</a>
+					</div>
+				</div>
+				<button type="button" class="btn btn-primary shadow-sm" data-toggle="modal" data-target="#new-contact">
+					New
+				</button>
+			</div>
+		</div>
+
+		<div class="w-100 mx-auto mb-4 px-2" style="max-width: 480px;">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text border-0"><i class="fa fa-search"></i></span>
+				</div>
+				<input type="text" id="contact-search" class="form-control bg-light border-0 small" placeholder="Search...">
+			</div>
+		</div>
+	</nav>
+
+	<div class="mx-auto my-5 px-2" style="max-width: 480px;">
+		{% endraw %}
+		{% if data|length > 1 %}
+		{% for contact in data %}
+		{% if contact['firstname'] != None or contact['lastname'] != None %}
+		{% raw %}
+		<div class="contact {% endraw %}{{ contact['id'] }}{% raw %} card shadow border-left-primary mb-4">
+			<div class="card-header p-3">
+				<h5 class="contact-name card-title text-gray-900 mb-0"><span class="contact-firstname">{% endraw %}{{ contact['firstname'] }}{% raw %}</span> <span class="contact-lastname">{% endraw %}{{ contact['lastname'] }}{% raw %}</span></h5>
+			</div>
+
+			<ul class="list-group list-group-flush">
+				{% endraw %}{% if contact['birthdate'] != None and contact['birthdate']|length > 0 %}{% raw %}
+				<li class="list-group-item">
+					<label class="text-muted small mb-1 d-block w-100">Birthday</label>
+					<span class="contact-birthdate">{% endraw %}{{ contact['birthdate'] }}{% raw %}</span>
+				</li>
+				{% endraw %}{% endif %}
+				{% if contact['emailaddress'] != None and contact['emailaddress']|length > 0 %}{% raw %}
+				<li class="list-group-item">
+					<label class="text-muted small mb-1 d-block w-100">Email Address</label>
+					<span class="contact-emailaddress">{% endraw %}{{ contact['emailaddress'] }}{% raw %}</span>
+				</li>
+				{% endraw %}{% endif %}
+				{% if contact['phonenumber'] != None and contact['phonenumber']|length > 0 %}{% raw %}
+				<li class="list-group-item">
+					<label class="text-muted small mb-1 d-block w-100">Phone Number</label>
+					<span class="contact-phonenumber">{% endraw %}{{ contact['phonenumber'] }}{% raw %}</span>
+				</li>
+				{% endraw %}{% endif %}
+				{% if contact['note'] != None and contact['note']|length > 0 %}{% raw %}
+				<li class="list-group-item">
+					<label class="text-muted small mb-1 d-block w-100">Notes</label>
+					<span class="contact-note">{% endraw %}{{ contact['note'] }}{% raw %}</span>
+				</li>
+				{% endraw %}{% endif %}{% raw %}
+			</ul>
+
+			<div class="dropdown no-arrow ml-auto px-2">
+				<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="fa fa-ellipsis-h p-3 text-gray-600"></i>
+				</a>
+				<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in">
+					<a class="dropdown-item edit-contact-btn" href="javascript:;" data-value="{% endraw %}{{ contact['id'] }}{% raw %}">Edit</a>
+					<a class="dropdown-item dup-contact-btn" href="javascript:;" data-value="{% endraw %}{{ contact['id'] }}{% raw %}">Duplicate</a>
+
+					<div class="dropdown-divider"></div>
+
+					<a class="dropdown-item text-danger delete-contact-btn" href="javascript:;" data-value="{% endraw %}{{ contact['id'] }}{% raw %}">Delete</a>
+				</div>
+			</div>
+		</div>
+		{% endraw %}
+		{% endif %}
+		{% endfor %}
+		{% else %}
+		<div class="card mb-3 p-4">
+			<span class="h5 font-weight-normal text-muted mb-0">You currently don't have any contacts.</span>
+		</div>
+		{% endif %}
+		{% raw %}
+	</div>
+
+	<div class="modal animated--grow-in" id="new-contact" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header card-header pt-4 pb-2">
+					<h5 class="modal-title h3 font-weight-bold text-gray-900">New Contact</h5>
+					<button type="button" class="close py-0 mt-2" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="py-2">
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item border-0 px-3">
+							<div class="row">
+								<div class="col-md-6 pr-md-2">
+									<label class="text-muted small mb-1 d-block w-100" for="input-firstname">First name</label>
+									<input type="text" name="firstname" id="input-firstname" class="form-control" placeholder="First name" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"/>
+								</div>
+								<div class="col-md-6 pl-md-2 mt-2 mt-md-0">
+									<label class="text-muted small mb-1 d-block w-100" for="input-lastname">Last name</label>
+									<input type="text" name="lastname" id="input-lastname" class="form-control" placeholder="Last name" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"/>
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item border-0 px-3">
+							<label class="text-muted small mb-1 d-block w-100" for="input-birthdate">Birthday</label>
+							<input type="datetime" name="birthdate" id="input-birthdate" class="form-control" placeholder="Birthday" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"/>
+						</li>
+						<li class="list-group-item border-0 px-3">
+							<label class="text-muted small mb-1 d-block w-100" for="input-email">Email address</label>
+							<input type="email" name="emailaddress" id="input-email" class="form-control" placeholder="Email address" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"/>
+						</li>
+						<li class="list-group-item border-0 px-3">
+							<label class="text-muted small mb-1 d-block w-100" for="input-phone">Phone number</label>
+							<input type="tel" name="phonenumber" id="input-phone" class="form-control" placeholder="Phone number" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"/>
+						</li>
+						<li class="list-group-item mt-2 px-3">
+							<label class="text-muted small mb-1 d-block w-100" for="input-note">Notes</label>
+							<textarea type="tel" name="note" id="input-note" class="form-control" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
+						</li>
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<input type="hidden" name="id" id="input-id" value="">
+					<button type="button" id="add-contact-btn" class="btn btn-primary shadow-sm">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer class="py-5">
+	</footer>
+
+	<script>
+	$('#contact-search').on('input change', function() {
+		if($(this).val() != '') {
+			$('.contact').fadeOut(100);
+			$('.contact-name').each(function() {
+				if($(this).text().toLowerCase().includes($('#contact-search').val().toLowerCase())) {
+					$(this).parents('.contact').fadeIn(100);
+				}
+			});
+		} else {
+			$('.contact').fadeIn(100);
+		}
+	});
+
+	$('#add-contact-btn').bind('click', function() {
+		$.ajax({
+			url: '/contact',
+			type: 'post',
+			async: false,
+			data: { id: $('[name="id"]').val(),
+				firstname: $('[name="firstname"]').val(),
+				lastname: $('[name="lastname"]').val(),
+				birthdate: $('[name="birthdate"]').val(),
+				emailaddress: $('[name="emailaddress"]').val(),
+				phonenumber: $('[name="phonenumber"]').val(),
+				note: $('[name="note"]').val() },
+			success: function() {
+				$('#new-contact').modal('hide');
+				$('[name="id"]').val("");
+				$('[name="firstname"]').val("");
+				$('[name="lastname"]').val("");
+				$('[name="birthdate"]').val("");
+				$('[name="emailaddress"]').val("");
+				$('[name="phonenumber"]').val("");
+				$('[name="note"]').val("");
+				$('[name="id"]').val("");
+				location.reload();
+			}
+		});
+	});
+
+	$('.edit-contact-btn').bind('click', function() {
+		var contactId = $(this).attr('data-value');
+		$('.contact').each(function() {
+			if($(this).hasClass(contactId)) {
+				var firstName = $('.contact-firstname', this).text();
+				var lastName = $('.contact-lastname', this).text();
+				var emailAddress = $('.contact-emailaddress', this).text();
+				var phoneNumber = $('.contact-phonenumber', this).text();
+				var birthdate = $('.contact-birthdate', this).text();
+				var note = $('.contact-note', this).text();
+
+				$('[name="id"]').val("");
+				$('[name="firstname"]').val(firstName);
+				$('[name="lastname"]').val(lastName);
+				$('[name="emailaddress"]').val(emailAddress);
+				$('[name="phonenumber"]').val(phoneNumber);
+				$('[name="emailaddress"]').val(birthdate);
+				$('[name="note"]').val(note);
+				$('[name="id"]').val(contactId);
+				$('#new-contact .modal-title').text("Edit Contact");
+				$('#new-contact').modal('show');
+			}
+		});
+	});
+
+	$('.delete-contact-btn').bind('click', function() {
+		$.ajax({
+			url: '/delete',
+			type: 'post',
+			async: false,
+			data: { id: $(this).attr('data-value') },
+			success: function() {
+				location.reload();
+			}
+		});
+	});
+
+	$('#new-contact').on('hidden.bs.modal', function (e) {
+		if($('[name="id"]').val() != "") {
+			$('[name="firstname"]').val("");
+			$('[name="lastname"]').val("");
+			$('[name="birthdate"]').val("");
+			$('[name="emailaddress"]').val("");
+			$('[name="phonenumber"]').val("");
+			$('[name="note"]').val("");
+			$('[name="id"]').val("");
+			$('.modal-title', this).text("New Contact");
+		}
+	});
+	</script>
+{% endraw %}
+{% endblock body %}

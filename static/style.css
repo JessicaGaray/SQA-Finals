@@ -1,0 +1,7 @@
+.btn.btn-link:hover {
+	text-decoration: none;
+}
+
+.card-columns {
+	column-count: 2;
+}
