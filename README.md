@@ -1,2 +1,1 @@
-# SQA-Finals
-Software Quality Assurance finals
+# sqa-finals
